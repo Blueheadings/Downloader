@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -16,15 +17,12 @@ import java.net.URL;
 public class DownloadThread extends Thread{
 
     static MainActivity mainActivity;
-
     String link;
     String out;
-    Context context;
 
-    public DownloadThread(String link, String out, Context context){
+    public DownloadThread(String link, String out){
         this.link = link;
         this.out = out;
-        this.context = context;
     }
 
     public void run(){
@@ -32,9 +30,9 @@ public class DownloadThread extends Thread{
             URL url = new URL(link);
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
             double fileSize = 0;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                fileSize = (double)http.getContentLengthLong();
-            }
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    fileSize = (double)http.getContentLengthLong();
+                }
             BufferedInputStream in = new BufferedInputStream(http.getInputStream());
             FileOutputStream fos = new FileOutputStream(out);
             BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
@@ -42,17 +40,16 @@ public class DownloadThread extends Thread{
             double downloaded = 0.00;
             int read = 0;
             double percentDownloaded = 0.00;
-            while((read = in.read(buffer, 0, 1024)) >= 0){
-                bout.write(buffer, 0, read);
-                downloaded += read;
-                percentDownloaded = (downloaded*100)/fileSize;
-                String percent = String.format("%.4f", percentDownloaded);
-                mainActivity.textView.setText(percent);
-            }
+                while((read = in.read(buffer, 0, 1024)) >= 0){
+                    bout.write(buffer, 0, read);
+                    downloaded += read;
+                    percentDownloaded = (downloaded*100)/fileSize;
+                    String percent = String.format("%.4f", percentDownloaded);
+                    mainActivity.textView.setText(percent);
+                }
             bout.close();
             in.close();
             Toast.makeText(mainActivity, "Finished", Toast.LENGTH_SHORT).show();
-
         }catch (Exception e){
             e.printStackTrace();
             Toast.makeText(mainActivity, "Exception", Toast.LENGTH_SHORT).show();

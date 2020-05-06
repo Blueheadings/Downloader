@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     public TextView textView;
 
-    File file;
+    String file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         String[] url = URL.trim().toString().split("/");
         final String filename = url[url.length - 1];
 
-        file = new File(folder, filename);
+        file = (folder + filename);
 
 
         /**
@@ -86,134 +86,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
-    private void startDownload(String link, File out){
-
+    private void startDownload(String link, String out){
         Intent intent = new Intent(MainActivity.this, MyDownloadService.class);
+        intent.putExtra("link", link);
+        intent.putExtra("out", out);
         startService(intent);
-
-
-
-
-
-
-
-
-
-        /*Download download = new Download(link, out, this);
-        download.run();
-
-//        textView.setText((int) download.run());
-
-        return download.run();
-
-         */
-/*
-        try {
-            URL url = new URL(link);
-            HttpURLConnection http = (HttpURLConnection)url.openConnection();
-            double fileSize = 0;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                fileSize = (double)http.getContentLengthLong();
-            }
-            BufferedInputStream in = new BufferedInputStream(http.getInputStream());
-            FileOutputStream fos = new FileOutputStream(out);
-            BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
-            byte[] buffer = new byte[1024];
-            double downloaded = 0.00;
-            int read = 0;
-            double percentDownloaded = 0.00;
-            while((read = in.read(buffer, 0, 1024)) >= 0){
-                bout.write(buffer, 0, read);
-                downloaded += read;
-                percentDownloaded = (downloaded*100)/fileSize;
-                String percent = String.format("%.4f", percentDownloaded);
-//                System.out.println("Downloaded " + percent + "%");
-//                return percentDownloaded;
-                textView.setText(percent);
-            }
-            bout.close();
-            in.close();
-//            System.out.println("Finished");
-//            Toast.makeText(context, "Finished", Toast.LENGTH_SHORT).show();
-//            return 100;
-            Toast.makeText(this, "Finished", Toast.LENGTH_SHORT).show();
-
-        }catch (Exception e){
-            e.printStackTrace();
-//            return -1;
-            Toast.makeText(this, "Exception", Toast.LENGTH_SHORT).show();
-
-
-        } */
-
-
     }
-
-    private void startDownload2() {
-
-            String url = editText.getText().toString().trim();
-            //create download request
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-
-            //allow types of networks to download files
-            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-            request.setTitle("Download"); //set title in download notification
-            request.setDescription("Downloading file...");
-
-            request.allowScanningByMediaScanner();
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-//            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "" + System.currentTimeMillis()); //get current timestamp as file name
-
-            //get download service and enqueue
-            DownloadManager manager= (DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
-            manager.enqueue(request);
-
-
-
-//            double downloaded = Double.parseDouble(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
-//            double totalSize = Double.parseDouble(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
-//
-//            double percent = (totalSize*100)/downloaded;
-
-//            String percenString = String.format("%.4f",percent) + " %";
-//            editText.setText(percenString);
-
-
-            DownloadManager.Query query = new DownloadManager.Query();
-            query.setFilterById(this.getTaskId());
-
-            Cursor c = manager.query(query);
-            if (c.moveToFirst()) {
-                int sizeIndex = c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
-                int downloadedIndex = c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
-                long size = c.getInt(sizeIndex);
-                long downloaded = c.getInt(downloadedIndex);
-                double progress = 0.0;
-                if (size != -1) progress = downloaded * 100.0 / size;
-                // At this point you have the progress as a percentage.
-
-                String percenString = String.format("%.4f", progress);
-                textView.setText(percenString.toString());
-            }
-
-            BroadcastReceiver receiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())) {
-                        Toast.makeText(context, "Download Completed!", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            };
-
-            registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-    }
-
-
 
     //handle permission result
     @Override
