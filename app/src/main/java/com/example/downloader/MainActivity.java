@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText;
     private Button button;
 
-    private TextView textView;
+    public TextView textView;
 
     File file;
 
@@ -90,6 +90,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startDownload(String link, File out){
+
+        Intent intent = new Intent(MainActivity.this, MyDownloadService.class);
+        startService(intent);
+
+
+
+
+
+
+
+
+
         /*Download download = new Download(link, out, this);
         download.run();
 
@@ -98,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         return download.run();
 
          */
-
+/*
         try {
             URL url = new URL(link);
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
@@ -133,7 +145,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
 //            return -1;
             Toast.makeText(this, "Exception", Toast.LENGTH_SHORT).show();
-        }
+
+
+        } */
+
+
     }
 
     private void startDownload2() {
