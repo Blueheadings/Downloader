@@ -1,38 +1,33 @@
 package com.example.downloader;
 
-
 import android.content.Context;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import androidx.annotation.NonNull;
 
 /**
  * Quelle: https://www.youtube.com/watch?v=rd6m-6l2xQQ
  */
 
-public class Download {
+public class DownloadThread extends Thread{
+
+    static MainActivity mainActivity;
 
     String link;
     String out;
     Context context;
 
-    public Download(String link, String out, Context context){
+    public DownloadThread(String link, String out, Context context){
         this.link = link;
         this.out = out;
         this.context = context;
     }
 
-
-    public double run(){
-
+    public void run(){
         try {
             URL url = new URL(link);
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
@@ -41,7 +36,7 @@ public class Download {
                 fileSize = (double)http.getContentLengthLong();
             }
             BufferedInputStream in = new BufferedInputStream(http.getInputStream());
-            FileOutputStream fos = new FileOutputStream(this.out);
+            FileOutputStream fos = new FileOutputStream(out);
             BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
             byte[] buffer = new byte[1024];
             double downloaded = 0.00;
@@ -51,22 +46,16 @@ public class Download {
                 bout.write(buffer, 0, read);
                 downloaded += read;
                 percentDownloaded = (downloaded*100)/fileSize;
-//                String percent = String.format("%.4f", percentDownloaded);
-//                System.out.println("Downloaded " + percent + "%");
-                return percentDownloaded;
+                String percent = String.format("%.4f", percentDownloaded);
+                mainActivity.textView.setText(percent);
             }
             bout.close();
             in.close();
-//            System.out.println("Finished");
-            Toast.makeText(context, "Finished", Toast.LENGTH_SHORT).show();
-            return 100;
+            Toast.makeText(mainActivity, "Finished", Toast.LENGTH_SHORT).show();
 
-        }catch (IOException e){
-            e.printStackTrace();
-            return -1;
         }catch (Exception e){
-            return -2;
+            e.printStackTrace();
+            Toast.makeText(mainActivity, "Exception", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
