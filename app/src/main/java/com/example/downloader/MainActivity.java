@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MyDownloadService.mainActivity = this;
+        DownloadThread.mainActivity = this;
+
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.downloadBtn);
         textView = findViewById(R.id.txtVw);

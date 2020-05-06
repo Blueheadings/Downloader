@@ -40,6 +40,7 @@ public class DownloadThread extends Thread{
             double downloaded = 0.00;
             int read = 0;
             double percentDownloaded = 0.00;
+            Toast.makeText(mainActivity, "Download startet", Toast.LENGTH_SHORT).show();
                 while((read = in.read(buffer, 0, 1024)) >= 0){
                     bout.write(buffer, 0, read);
                     downloaded += read;

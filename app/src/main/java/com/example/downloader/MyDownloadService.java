@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 
 public class MyDownloadService extends Service {
 
+    static MainActivity mainActivity;
     String link;
     String out;
 
