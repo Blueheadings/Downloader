@@ -20,6 +20,8 @@ public class DownloadThread extends Thread{
     String link;
     String out;
 
+    String percent;
+
     public DownloadThread(String link, String out){
         this.link = link;
         this.out = out;
@@ -45,8 +47,15 @@ public class DownloadThread extends Thread{
                     bout.write(buffer, 0, read);
                     downloaded += read;
                     percentDownloaded = (downloaded*100)/fileSize;
-                    String percent = String.format("%.4f", percentDownloaded);
-                    mainActivity.textView.setText(percent);
+                    percent = String.format("%.4f", percentDownloaded);
+
+                    mainActivity.textView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainActivity.textView.setText(percent);
+                        }
+                    });
+
                 }
             bout.close();
             in.close();

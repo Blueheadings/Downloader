@@ -29,9 +29,6 @@ public class MyDownloadService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        Thread downloadThread = new DownloadThread(link, out);
-        downloadThread.start();
     }
 
 
@@ -39,6 +36,9 @@ public class MyDownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         link = intent.getExtras().getString("link");
         out = intent.getExtras().getString("out");
+
+        Thread downloadThread = new DownloadThread(link, out);
+        downloadThread.start();
         return START_STICKY;
     }
 
