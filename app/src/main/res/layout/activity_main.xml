@@ -18,11 +18,17 @@
         android:layout_height="wrap_content"
         android:text="Download"
         android:id="@+id/downloadBtn" />
-
+<!--
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Fortschritt"
         android:id="@+id/txtVw"/>
+-->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

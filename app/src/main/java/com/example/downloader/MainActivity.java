@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editText;
     private Button button;
 
-    public TextView textView;
+    public ProgressBar progressBar;
 
     String file;
 
@@ -49,18 +50,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MyDownloadService.mainActivity = this;
-        DownloadThread.mainActivity = this;
-
         DownloadTask.mainActivity = this;
 
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.downloadBtn);
-        textView = findViewById(R.id.txtVw);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setMax(100);
 
         final String URL = editText.getText().toString();
-//        final String Path = Environment.DIRECTORY_DOWNLOADS;
-//                + "" + System.currentTimeMillis();
-//        File Path = Environment.getExternalStorageDirectory(Environment.DIRECTORY_DOWNLOADS);
         File folder = Environment.getExternalStorageDirectory();
         String[] url = URL.trim().toString().split("/");
         final String filename = url[url.length - 1];
@@ -83,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                         requestPermissions(permissions, PERMISSION_STORAGE_CODE);
                     }else{
                         //Permission alredy granted, perform download
-                        //startDownload(URL, Environment.getExternalStorageDirectory(Environment.DIRECTORY_DOWNLOADS));
                         try {
                             startDownload(new URL(editText.getText().toString().trim()));
                         } catch (MalformedURLException e) {
@@ -107,13 +104,7 @@ public class MainActivity extends AppCompatActivity {
     private void startDownload(URL url){
         Intent intent = new Intent(MainActivity.this, MyDownloadService.class);
         intent.putExtra("link", url.toString());
-//        intent.putExtra("out", out);
         startService(intent);
-
-
-
-//        DownloadTask downloadTask = new DownloadTask();
-//        downloadTask.execute(url);
     }
 
     //handle permission result
