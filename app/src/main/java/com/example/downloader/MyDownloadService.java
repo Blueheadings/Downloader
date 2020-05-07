@@ -12,6 +12,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import androidx.annotation.Nullable;
@@ -36,10 +37,18 @@ public class MyDownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         link = intent.getExtras().getString("link");
-        out = intent.getExtras().getString("out");
+//        out = intent.getExtras().getString("out");
 
-        Thread downloadThread = new DownloadThread(link, out);
-        downloadThread.start();
+//        Thread downloadThread = new DownloadThread(link, out);
+//        downloadThread.start();
+
+        DownloadTask downloadTask = new DownloadTask();
+        try {
+            downloadTask.execute(new URL(link));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         return START_STICKY;
     }
 

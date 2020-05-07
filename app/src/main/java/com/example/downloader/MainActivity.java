@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -81,21 +82,36 @@ public class MainActivity extends AppCompatActivity {
                     }else{
                         //Permission alredy granted, perform download
                         //startDownload(URL, Environment.getExternalStorageDirectory(Environment.DIRECTORY_DOWNLOADS));
-                        startDownload(URL, file);
+                        try {
+                            startDownload(new URL(editText.getText().toString().trim()));
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                            Toast.makeText(v.getContext(), "Malfromed URL!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }else{
                     //System os is less than marshmallow, perform download
-                    startDownload(URL, file);
+                    try {
+                        startDownload(new URL(editText.getText().toString().trim()));
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                        Toast.makeText(v.getContext(), "Malfromed URL!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
     }
 
-    private void startDownload(String link, String out){
+    private void startDownload(URL url){
         Intent intent = new Intent(MainActivity.this, MyDownloadService.class);
-        intent.putExtra("link", link);
-        intent.putExtra("out", out);
+        intent.putExtra("link", url);
+//        intent.putExtra("out", out);
         startService(intent);
+
+
+
+//        DownloadTask downloadTask = new DownloadTask();
+//        downloadTask.execute(url);
     }
 
     //handle permission result
@@ -105,7 +121,12 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSION_STORAGE_CODE:{
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     //permission granted from popup, perform download
-                    startDownload(editText.getText().toString(), file);
+                    try {
+                        startDownload(new URL(editText.getText().toString().trim()));
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Malfromed URL!", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     //permission denied from popup, show error message
                     Toast.makeText(this, "Permission denied :/", Toast.LENGTH_SHORT).show();
