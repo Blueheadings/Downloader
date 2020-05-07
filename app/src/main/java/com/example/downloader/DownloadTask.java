@@ -12,6 +12,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.MalformedInputException;
 
+/**
+ * @author Willi Hollatz
+ * SMSB4, 17952
+ *
+ * Quellen / Hilfen:
+ * https://www.youtube.com/watch?v=rd6m-6l2xQQ
+ */
+
 public class DownloadTask extends AsyncTask<URL, Integer, Double> {
 
     public static MainActivity mainActivity;

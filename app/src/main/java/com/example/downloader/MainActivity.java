@@ -33,6 +33,11 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * @author Willi Hollatz
+ * SMSB4, 17952
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_STORAGE_CODE = 1000;
