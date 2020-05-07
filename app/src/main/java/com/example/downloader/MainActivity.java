@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /**
-         * Quelle: https://www.youtube.com/watch?v=c-SDbITS_R4
+         * Quellen / Hilfen: https://www.youtube.com/watch?v=c-SDbITS_R4
          */
 
         button.setOnClickListener(new View.OnClickListener() {

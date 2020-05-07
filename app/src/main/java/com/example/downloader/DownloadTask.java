@@ -16,6 +16,8 @@ public class DownloadTask extends AsyncTask<URL, Integer, Double> {
 
     public static MainActivity mainActivity;
 
+    File file;
+
     @Override
     protected Double doInBackground(URL... urls) {
 
@@ -24,6 +26,7 @@ public class DownloadTask extends AsyncTask<URL, Integer, Double> {
         String[] urlSplit = url.toString().split("/");
         final String filename = urlSplit[urlSplit.length - 1];
         File fileNameWithPath = new File((pathName + "/" + filename));
+        file = fileNameWithPath;
 
         double fileSize = 0;
         double percentDownloaded = 0;
@@ -65,7 +68,7 @@ public class DownloadTask extends AsyncTask<URL, Integer, Double> {
             mainActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(mainActivity, "Exception", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, "Error :(", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -79,7 +82,10 @@ public class DownloadTask extends AsyncTask<URL, Integer, Double> {
 
     @Override
     protected void onPostExecute(Double aDouble) {
-            Toast.makeText(mainActivity, "Download Abgeschlossen", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mainActivity,
+//                    "Fertig"
+                    "Download Abgeschlossen! \nSpeicherort: " + file
+                    , Toast.LENGTH_LONG).show();
     }
 
 }
