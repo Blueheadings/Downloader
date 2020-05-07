@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         MyDownloadService.mainActivity = this;
         DownloadThread.mainActivity = this;
 
+        DownloadTask.mainActivity = this;
+
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.downloadBtn);
         textView = findViewById(R.id.txtVw);
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startDownload(URL url){
         Intent intent = new Intent(MainActivity.this, MyDownloadService.class);
-        intent.putExtra("link", url);
+        intent.putExtra("link", url.toString());
 //        intent.putExtra("out", out);
         startService(intent);
 

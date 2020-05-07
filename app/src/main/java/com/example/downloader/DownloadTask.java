@@ -1,5 +1,6 @@
 package com.example.downloader;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.widget.TextView;
@@ -17,7 +18,8 @@ import java.nio.charset.MalformedInputException;
 
 public class DownloadTask extends AsyncTask<URL, Integer, Double> {
 
-    static MainActivity mainActivity;
+//    @SuppressLint("StaticFieldLeak")
+    public static MainActivity mainActivity;
 /*
     @Override
     protected void onPreExecute() {
@@ -53,7 +55,7 @@ public class DownloadTask extends AsyncTask<URL, Integer, Double> {
             double downloaded = 0.00;
             int read = 0;
             percentDownloaded = 0.00;
-            Toast.makeText(mainActivity, "Download startet", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mainActivity, "Download startet", Toast.LENGTH_SHORT).show();
             while ((read = in.read(buffer, 0, 1024)) >= 0) {
                 bout.write(buffer, 0, read);
                 downloaded += read;
@@ -96,11 +98,13 @@ public class DownloadTask extends AsyncTask<URL, Integer, Double> {
     protected void onProgressUpdate(Integer... values) {
         mainActivity.textView.setText(values[0]);
     }
-
+/*
     @Override
     protected void onPostExecute(Double aDouble) {
             Toast.makeText(mainActivity, "Fertig", Toast.LENGTH_SHORT).show();
     }
+
+ */
 
 
 }
